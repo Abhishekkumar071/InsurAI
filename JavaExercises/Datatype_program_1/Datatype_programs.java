@@ -1,6 +1,4 @@
 package Datatype_programs;
-
-
 public class PrimitiveTypesDemo {
     public static void main(String[] args) {
         // 1) Declare primitives
