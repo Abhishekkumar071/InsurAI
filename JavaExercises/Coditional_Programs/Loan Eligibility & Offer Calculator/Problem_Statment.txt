@@ -1,0 +1,7 @@
+Problem: Given applicant data (annual income, credit score, existing monthly EMI, requested loan amount and term), 
+decide whether to approve the loan and give a simple offer tier (Low interest / Standard / Review / Rejected). 
+If approved, show an approximate monthly EMI and the interest-rate tier used.
+
+
+Solution: Uses nested if-else and DTI (debt-to-income) estimate.
+Interest-rate tier depends on credit score and income.
