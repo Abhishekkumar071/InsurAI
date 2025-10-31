@@ -8,9 +8,9 @@ export default function Navbar() {
       <div className="flex gap-4">
         <Link to="/" className="hover:underline">Home</Link>
         <Link to="/login" className="hover:underline">Login</Link>
-  <Link to="/register" className="hover:underline">Register</Link>
-  <Link to="/about" className="hover:underline">About</Link>
-  <Link to="/admin" className="hover:underline">Admin</Link>
+        <Link to="/register" className="hover:underline">Register</Link>
+        <Link to="/about" className="hover:underline">About</Link>
+        <Link to="/admin" className="hover:underline">Admin</Link>
       </div>
     </nav>
   );

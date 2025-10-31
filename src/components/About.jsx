@@ -11,7 +11,7 @@ export default function About() {
     >
       <div className="bg-white/80 p-8 rounded text-center max-w-2xl">
         <h2 className="text-3xl font-semibold mb-4">About InsureAI</h2>
-        <p className="text-gray-800">InsureAI helps customers choose insurance using AI-driven suggestions and a simple UI.</p>
+        <p className="text-gray-800">InsurAI helps customers choose insurance using AI-driven suggestions and a simple UI.</p>
       </div>
     </div>
   );
