@@ -19,6 +19,8 @@ function App() {
   <Route path="/about" element={<About />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
+      {/* Render About at the bottom of every page */}
+      <About />
     </Router>
   );
 }

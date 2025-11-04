@@ -48,6 +48,7 @@ const slides = [
 
 export default function Home() {
   const [index, setIndex] = useState(0);
+  const [query, setQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,6 +60,40 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen">
+      {/* Search box (centered at top) */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const q = query.trim().toLowerCase();
+          if (!q) return navigate('/about');
+          const found = slides.findIndex(
+            (s) => s.title.toLowerCase().includes(q) || s.text.toLowerCase().includes(q)
+          );
+          if (found >= 0) {
+            setIndex(found);
+          } else {
+            // If nothing matched, navigate to About page for more info
+            navigate('/about');
+          }
+        }}
+        className="absolute z-30 left-1/2 -translate-x-1/2 top-6 w-full max-w-2xl px-4"
+      >
+        <div className="flex gap-2">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="flex-1 px-4 py-2 rounded-md border border-white/30 bg-white/10 text-white placeholder-white/70"
+            placeholder="Search plans, e.g. health, car, travel or type 'about'..."
+            aria-label="Search policies"
+          />
+          <button
+            type="submit"
+            className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            Search
+          </button>
+        </div>
+      </form>
       {slides.map((slide, i) => (
         <div
           key={slide.id}
