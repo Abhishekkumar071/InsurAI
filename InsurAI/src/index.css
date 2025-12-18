@@ -1,8 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* You can add your custom CSS below this line */
-body {
-  @apply bg-gray-50 text-gray-800 font-sans;
-}
