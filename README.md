@@ -52,6 +52,7 @@ Track application status (Pending / Approved / Rejected)
 Pay premium after approval (future scope)
 
 🛠️ Admin / Agent
+<img width="576" height="738" alt="agent" src="https://github.com/user-attachments/assets/b71824d7-8a91-454b-bbc1-9d6e8096d4ab" />
 
 Secure admin login
 
@@ -65,6 +66,7 @@ Manage policy availability on the platform
 
 🔷 System Workflow
 🧑‍💻 User Flow
+<img width="574" height="712" alt="user" src="https://github.com/user-attachments/assets/e591294e-e51d-4771-8363-992c35acadb1" />
 
 User visits Home Page
 
