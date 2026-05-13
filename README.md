@@ -1,229 +1,82 @@
-🧠 InsurAI – Smart Insurance Management Platform
-🔷 What is InsurAI?
-
-InsurAI is a full-stack web-based insurance platform designed to digitalize and automate the traditional insurance process.
-It allows users to discover, compare, and apply for insurance policies online, while enabling admins/agents to manage policies and applications efficiently through a secure dashboard.
-
-The platform is built using React (Frontend), Spring Boot (Backend), and MySQL (Database), following industry-standard architecture and security practices.
-
-🔷 Why InsurAI? (Problem Statement)
-
-Traditional insurance systems face several issues:
-
-Manual paperwork and slow approval processes
-
-Difficulty in comparing policies
-
-Lack of transparency for users
-
-High dependency on agents for basic tasks
-
-Inefficient tracking of applications
-
-InsurAI solves these problems by providing a centralized, digital, and automated insurance solution.
-
-🔷 Project Objectives
-
-Simplify insurance policy discovery
-
-Enable quick and secure online applications
-
-Automate admin approval workflows
-
-Maintain transparent application status tracking
-
-Reduce manual effort and delays
-
-Prepare a foundation for future AI integration
-
-🔷 User Roles in InsurAI
-👤 User
-
-Register and log in securely
-
-View insurance categories and policies
-
-See policy details: premium, benefits, terms
-
-Apply for insurance plans
-
-Track application status (Pending / Approved / Rejected)
-
-Pay premium after approval (future scope)
-
-🛠️ Admin / Agent
-<img width="576" height="738" alt="agent" src="https://github.com/user-attachments/assets/b71824d7-8a91-454b-bbc1-9d6e8096d4ab" />
-
-Secure admin login
-
-Add, update, and delete insurance policies
-
-View all user applications
-
-Approve or reject applications
-
-Manage policy availability on the platform
-
-🔷 System Workflow
-🧑‍💻 User Flow
-<img width="574" height="712" alt="user" src="https://github.com/user-attachments/assets/e591294e-e51d-4771-8363-992c35acadb1" />
-
-User visits Home Page
-
-Browses insurance categories
-
-Views policy details
-
-Logs in / Registers
-
-Applies for policy
-
-Application marked as Pending
-
-Admin reviews application
-
-Status updated to Approved / Rejected
-
-User proceeds to payment (future scope)
-
-🛠️ Admin Flow
-
-Admin logs in
-
-Adds insurance policies
-
-Policies stored in MySQL
-
-Reviews user applications
-
-Approves or rejects requests
-
-Status reflected to users
-
-🔷 Technology Stack
-Frontend
-
-React.js
-
-Axios (API calls)
-
-HTML, CSS, JavaScript
-
-Backend
-
-Spring Boot
-
-RESTful APIs
-
-Spring Data JPA
-
-JWT Authentication
-
-Database
-
-MySQL
-
-Tools
-
-Spring Tool Suite 4
-
-VS Code
-
-Postman
-
-Git & GitHub
-
-🔷 Architecture Overview
-React Frontend
-     ↓
-Spring Boot REST APIs
-     ↓
-MySQL Database
-
-
-Frontend handles UI and user interactions
-
-Backend manages business logic and security
-
-Database stores users, policies, and applications
-
-🔷 Database Entities
-
-User – stores login and role details
-
-Policy – stores insurance policy data
-
-Application – tracks user applications and status
-
-🔷 Security Implementation
-
-JWT-based authentication
-
-Role-based access control (User / Admin)
-
-Backend validation for all inputs
-
-Secure REST endpoints
-
-🔷 Challenges Faced
-
-React and Spring Boot integration
-
-DTO–Entity mapping errors
-
-JWT token handling
-
-Role-based access implementation
-
-Database relationship management
-
-All challenges were resolved using debugging, Postman testing, and mentor guidance.
-
-🔷 Learnings & Outcomes
-
-Full-stack application development
-
-REST API design and integration
-
-Secure authentication mechanisms
-
-Database schema design
-
-Real-world software architecture
-
-Team collaboration and documentation
-
-🔷 Future Scope of InsurAI
-
-AI-based policy recommendation system
-
-Smart chatbot for insurance queries
-
-Fraud detection and risk scoring
-
-Online payment gateway integration
-
-Claims management module
-
-Analytics dashboards
-
-Mobile application (Android/iOS)
-
-Multi-language support
-
-🔷 Real-World Impact
-
-Faster insurance onboarding
-
-Reduced paperwork
-
-Improved transparency
-
-Better user experience
-
-Increased operational efficiency for agents
-
-🔷 Conclusion
-
-InsurAI demonstrates how modern full-stack technologies can transform the insurance industry by making processes faster, smarter, and more user-friendly.
-This project provided hands-on experience in building a real-world application and strengthened our foundation in software engineering.
+# 🧠 InsurAI – Smart Insurance Management Platform
+
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot)](https://spring.io/projects/spring-boot)
+[![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)](https://jwt.io/)
+
+> A full-stack, web-based insurance platform designed to digitalize, simplify, and automate the traditional insurance process.
+
+---
+
+<details>
+<summary><b>📖 Table of Contents</b></summary>
+
+- [About The Project](#about-the-project)
+- [Key Features](#key-features)
+- [System Architecture & Workflow](#system-architecture--workflow)
+- [Tech Stack](#tech-stack)
+- [Database Schema](#database-schema)
+- [Getting Started (Installation)](#getting-started)
+- [API Documentation](#api-documentation)
+- [Security](#security)
+- [Project Insights](#project-insights)
+- [Future Scope](#future-scope)
+- [License & Contact](#license--contact)
+
+</details>
+
+---
+
+## 🔷 About The Project
+
+Traditional insurance systems are often bogged down by manual paperwork, slow approvals, lack of user transparency, and high dependency on agents. **InsurAI** is engineered to solve these bottlenecks by providing a centralized, digital, and automated ecosystem. 
+
+It empowers users to seamlessly discover, compare, and apply for insurance policies while outfitting admins and agents with a secure, efficient dashboard to manage policies and track applications.
+
+**Core Objectives:**
+* Simplify insurance policy discovery.
+* Enable quick, secure online applications.
+* Automate admin approval workflows.
+* Maintain 100% transparent application status tracking.
+* Lay a robust architectural foundation for future Generative AI and LLM integrations.
+
+---
+
+## 🔷 Key Features
+
+### 👤 User Portal
+* **Secure Authentication:** Register and log in securely.
+* **Policy Discovery:** Browse insurance categories, compare plans, and view deep details (premium, benefits, terms).
+* **Seamless Applications:** Apply for insurance plans directly through the platform.
+* **Live Tracking:** Monitor application status in real-time (Pending / Approved / Rejected).
+* ***Upcoming:*** Premium payment gateway integration.
+
+### 🛠️ Admin / Agent Dashboard
+* **Secure Access:** Role-based login for administrative control.
+* **Policy Management:** Add, update, delete, and manage the availability of insurance policies.
+* **Application Workflow:** View all incoming user applications and efficiently approve or reject requests.
+
+---
+
+## 🔷 System Architecture & Workflow
+
+InsurAI follows a modern, decoupled architecture ensuring scalability and smooth data flow between the client and server.
+
+```mermaid
+graph TD
+    A[React Frontend] -->|REST API Calls| B(Spring Boot Backend)
+    B -->|JPA / Hibernate| C[(MySQL Database)]
+    B -->|JWT Authentication| D{Spring Security}
+    
+    subgraph User Flow
+    U1[Browse Policies] --> U2[Log In / Register]
+    U2 --> U3[Apply for Policy]
+    U3 --> U4[Track Status]
+    end
+    
+    subgraph Admin Flow
+    A1[Log In] --> A2[Manage Policies]
+    A1 --> A3[Review Applications]
+    A3 -->|Approve/Reject| U4
+    end
