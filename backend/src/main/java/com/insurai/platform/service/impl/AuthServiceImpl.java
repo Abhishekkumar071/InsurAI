@@ -7,8 +7,10 @@ import com.insurai.platform.entity.Users;
 import com.insurai.platform.exception.BadRequestException;
 import com.insurai.platform.exception.DuplicateResourceException;
 import com.insurai.platform.repository.UserRepository;
+import com.insurai.platform.security.JwtUtil;
 import com.insurai.platform.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Override
     @Transactional
@@ -28,12 +32,13 @@ public class AuthServiceImpl implements AuthService {
         Users user = Users.builder()
                 .fullName(requestDto.getFullName())
                 .email(requestDto.getEmail())
-                .password(requestDto.getPassword())   // TODO Step 3: BCrypt encode
+                .password(passwordEncoder.encode(requestDto.getPassword()))
                 .role(Users.Role.USER)
                 .build();
 
         Users saved = userRepository.save(user);
-        return mapToResponse(saved, null);
+        String token = jwtUtil.generateToken(saved.getEmail(), saved.getRole().name());
+        return mapToResponse(saved, token);
     }
 
     @Override
@@ -41,11 +46,12 @@ public class AuthServiceImpl implements AuthService {
         Users user = userRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(() -> new BadRequestException("Invalid email or password"));
 
-        if (!user.getPassword().equals(requestDto.getPassword())) {   // TODO Step 3: BCrypt matches()
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new BadRequestException("Invalid email or password");
         }
 
-        return mapToResponse(user, null);   // token Step 3 mein aayega
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+        return mapToResponse(user, token);
     }
 
     private AuthResponseDTO mapToResponse(Users user, String token) {
