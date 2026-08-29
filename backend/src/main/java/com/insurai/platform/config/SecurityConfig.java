@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import org.springframework.http.HttpMethod;
 import java.util.List;
 
 @Configuration
@@ -42,7 +43,7 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("GET", "/api/v1/policies/**").permitAll()   // browsing public hai
+                        .requestMatchers(HttpMethod.GET, "/api/v1/policies/**").permitAll()   // browsing public hai
                         .requestMatchers("/api/v1/policies/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
