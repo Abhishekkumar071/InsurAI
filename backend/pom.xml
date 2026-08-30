@@ -19,6 +19,13 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.razorpay</groupId>
+			<artifactId>razorpay-java</artifactId>
+			<version>1.4.6</version>
+		</dependency>
+
 		<!-- Web (MVC + embedded Tomcat) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

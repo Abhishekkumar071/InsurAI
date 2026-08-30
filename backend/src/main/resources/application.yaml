@@ -21,3 +21,7 @@ server:
 jwt:
   secret: c29tZVN1cGVyU2VjcmV0S2V5VGhhdElzTG9uZ0Vub3VnaEZvckhTMjU2QWxnb3JpdGht
   expiration-ms: 86400000
+
+razorpay:
+  key-id: YOUR_TEST_KEY_ID
+  key-secret: YOUR_TEST_KEY_SECRET
