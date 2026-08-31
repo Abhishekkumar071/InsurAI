@@ -30,10 +30,20 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
+    private String resolveContentType(String extension) {
+        return switch (extension) {
+            case ".pdf" -> "application/pdf";
+            case ".jpg", ".jpeg" -> "image/jpeg";
+            case ".png" -> "image/png";
+            default -> "application/octet-stream";
+        };
+    }
 
-    private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
-            "application/pdf", "image/jpeg", "image/png"
-    );
+
+//    private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
+//            "application/pdf", "image/jpeg", "image/jpg", "image/png"
+//    );
+    private static final Set<String> ALLOWED_EXTENSIONS = Set.of(".pdf", ".jpg", ".jpeg", ".png");
     private static final long MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 
     private final DocumentRepository documentRepository;
@@ -56,12 +66,12 @@ public class DocumentServiceImpl implements DocumentService {
         if (file.getSize() > MAX_SIZE_BYTES) {
             throw new BadRequestException("File size must not exceed 5MB");
         }
-        if (!ALLOWED_CONTENT_TYPES.contains(file.getContentType())) {
+
+        String extension = getExtension(file.getOriginalFilename()).toLowerCase();
+        if (!ALLOWED_EXTENSIONS.contains(extension)) {
             throw new BadRequestException("Only PDF, JPEG, and PNG files are allowed");
         }
-
         try {
-            String extension = getExtension(file.getOriginalFilename());
             String storedFileName = UUID.randomUUID() + extension;
 
             Path applicationFolder = fileStorageConfig.getUploadPath().resolve(String.valueOf(applicationId));
@@ -75,7 +85,7 @@ public class DocumentServiceImpl implements DocumentService {
                     .documentType(type)
                     .originalFileName(file.getOriginalFilename())
                     .storedFilePath(targetPath.toString())
-                    .contentType(file.getContentType())
+                    .contentType(resolveContentType(extension))
                     .fileSizeBytes(file.getSize())
                     .verified(false)
                     .build();
