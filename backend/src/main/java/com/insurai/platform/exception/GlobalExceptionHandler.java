@@ -8,12 +8,26 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiResponse<Object>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        String message;
+        if (ex.getRequiredType() != null && ex.getRequiredType().isEnum()) {
+            Object[] allowedValues = ex.getRequiredType().getEnumConstants();
+            message = String.format("Invalid value '%s' for '%s'. Allowed values: %s",
+                    ex.getValue(), ex.getName(), java.util.Arrays.toString(allowedValues));
+        } else {
+            message = String.format("Invalid value '%s' for parameter '%s'", ex.getValue(), ex.getName());
+        }
+        return ResponseEntity.badRequest().body(ApiResponse.error(message, null));
+    }
 
     // Bean Validation (@Valid) failures — e.g. @NotBlank, @Email violations
     @ExceptionHandler(MethodArgumentNotValidException.class)
