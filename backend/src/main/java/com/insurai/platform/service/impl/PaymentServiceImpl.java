@@ -19,8 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @Service
 @RequiredArgsConstructor
@@ -87,7 +86,6 @@ public class PaymentServiceImpl implements com.insurai.platform.service.PaymentS
             throw new BadRequestException("Failed to create Razorpay order: " + e.getMessage());
         }
     }
-
     @Override
     @Transactional
     public PaymentResponseDTO verifyPayment(VerifyPaymentRequestDTO requestDto) {
@@ -95,7 +93,7 @@ public class PaymentServiceImpl implements com.insurai.platform.service.PaymentS
                 .orElseThrow(() -> new ResourceNotFoundException("Payment order not found"));
 
         try {
-            Map<String, String> attributes = new HashMap<>();
+            JSONObject attributes = new JSONObject();
             attributes.put("razorpay_order_id", requestDto.getRazorpayOrderId());
             attributes.put("razorpay_payment_id", requestDto.getRazorpayPaymentId());
             attributes.put("razorpay_signature", requestDto.getRazorpaySignature());

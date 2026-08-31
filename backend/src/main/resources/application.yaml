@@ -23,5 +23,5 @@ jwt:
   expiration-ms: 86400000
 
 razorpay:
-  key-id: YOUR_TEST_KEY_ID
-  key-secret: YOUR_TEST_KEY_SECRET
+  key-id: rzp_test_TW6VxZoZ26UhvN
+  key-secret: oeJc74k9SFwqwdmzAzEIuxjW
