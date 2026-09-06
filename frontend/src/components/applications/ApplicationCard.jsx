@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { ChevronDown, ChevronUp, CreditCard } from 'lucide-react';
 import { paymentApi } from '@/api/paymentApi';
 import { loadRazorpayScript } from '@/utils/loadRazorpay';
-import { APPLICATION_STATUS_META, formatCurrency, formatDate } from '@/utils/constants';
+import { APPLICATION_STATUS_META, formatDate } from '@/utils/constants';
 import { useAuthStore } from '@/store/authStore';
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';

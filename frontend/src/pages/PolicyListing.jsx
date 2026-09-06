@@ -8,6 +8,8 @@ import PolicyFilterBar from '@/components/policy/PolicyFilterBar';
 import Spinner from '@/components/common/Spinner';
 import EmptyState from '@/components/common/EmptyState';
 
+const EMPTY_POLICIES = [];
+
 export default function PolicyListing() {
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category');
@@ -18,7 +20,7 @@ export default function PolicyListing() {
     queryFn: () => (category ? policyApi.getByCategory(category) : policyApi.getAll()),
   });
 
-  const policies = data?.data || [];
+  const policies = data?.data || EMPTY_POLICIES;
 
   const filtered = useMemo(() => {
     if (!search) return policies;

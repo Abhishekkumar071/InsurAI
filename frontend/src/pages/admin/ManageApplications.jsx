@@ -1,14 +1,69 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Check, X } from 'lucide-react';
+import { Check, X, Download, ShieldCheck } from 'lucide-react';
 import { applicationApi } from '@/api/applicationApi';
+import { documentApi } from '@/api/documentApi';
 import { APPLICATION_STATUS_META, formatDate } from '@/utils/constants';
 import AdminTable from '@/components/admin/AdminTable';
 import Badge from '@/components/common/Badge';
 import Select from '@/components/common/Select';
 import Modal from '@/components/common/Modal';
 import Button from '@/components/common/Button';
+
+function ApplicationDocuments({ applicationId }) {
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useQuery({
+    queryKey: ['documents', 'admin', applicationId],
+    queryFn: () => documentApi.getAdminForApplication(applicationId),
+  });
+  const documents = data?.data || [];
+  const verifyMutation = useMutation({
+    mutationFn: (documentId) => documentApi.verify(documentId),
+    onSuccess: () => {
+      toast.success('Document verified');
+      queryClient.invalidateQueries({ queryKey: ['documents', 'admin', applicationId] });
+    },
+    onError: (err) => toast.error(err.response?.data?.message || 'Could not verify document'),
+  });
+
+  const downloadDocument = async (document) => {
+    try {
+      const response = await documentApi.download(document.id);
+      const blobUrl = URL.createObjectURL(response.data);
+      const link = window.document.createElement('a');
+      link.href = blobUrl;
+      link.download = document.originalFileName || `document-${document.id}`;
+      link.click();
+      URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Could not download document');
+    }
+  };
+
+  if (isLoading) return <span className="text-xs text-gray-400">Loading docs...</span>;
+  if (documents.length === 0) return <span className="text-xs text-gray-400">No documents</span>;
+
+  return (
+    <div className="space-y-1.5 min-w-48">
+      {documents.map((document) => (
+        <div key={document.id} className="flex items-center gap-2 text-xs">
+          <span className="truncate max-w-32" title={document.originalFileName}>{document.originalFileName}</span>
+          <button type="button" onClick={() => downloadDocument(document)} className="text-gray-500 hover:text-primary-600" title="Download document">
+            <Download size={14} />
+          </button>
+          {document.verified ? (
+            <span className="text-success-600">Verified</span>
+          ) : (
+            <button type="button" onClick={() => verifyMutation.mutate(document.id)} disabled={verifyMutation.isPending} className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-800 disabled:opacity-50" title="Verify document">
+              <ShieldCheck size={14} /> Verify
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 const STATUS_FILTERS = [
   { value: '', label: 'All' },
@@ -52,7 +107,7 @@ export default function ManageApplications() {
       </div>
 
       {!isLoading && (
-        <AdminTable columns={['Applicant', 'Policy', 'Status', 'Applied', 'Actions']}>
+        <AdminTable columns={['Applicant', 'Policy', 'Documents', 'Status', 'Applied', 'Actions']}>
           {applications.map((app) => {
             const meta = APPLICATION_STATUS_META[app.status] || {};
             return (
@@ -62,6 +117,7 @@ export default function ManageApplications() {
                   <p className="text-xs text-gray-400">{app.userEmail}</p>
                 </td>
                 <td className="px-4 py-3 text-gray-600">{app.policyName}</td>
+                <td className="px-4 py-3"><ApplicationDocuments applicationId={app.id} /></td>
                 <td className="px-4 py-3"><Badge color={meta.color}>{meta.label}</Badge></td>
                 <td className="px-4 py-3 text-gray-500 text-xs">{formatDate(app.appliedAt)}</td>
                 <td className="px-4 py-3">
