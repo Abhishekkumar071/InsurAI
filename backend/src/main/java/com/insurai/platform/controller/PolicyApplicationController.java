@@ -43,12 +43,13 @@ public class PolicyApplicationController {
         return ResponseEntity.ok(ApiResponse.success("Applications fetched", response));
     }
 
-    // ADMIN: view all applications (optional status filter)
+    // ADMIN: view all applications (with filter and pagination)
     @GetMapping("/admin/all")
-    public ResponseEntity<ApiResponse<List<PolicyApplicationResponseDTO>>> allApplications(
-            @RequestParam(required = false) ApplicationStatus status) {
+    public ResponseEntity<ApiResponse<PageResponseDTO<PolicyApplicationResponseDTO>>> allApplications(
+            @RequestParam(required = false) ApplicationStatus status,
+            @PageableDefault(size = 10, sort = "appliedAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        List<PolicyApplicationResponseDTO> response = applicationService.getAllApplications(status);
+        PageResponseDTO<PolicyApplicationResponseDTO> response = applicationService.getAllApplicationsPaged(status, pageable);
         return ResponseEntity.ok(ApiResponse.success("Applications fetched", response));
     }
 
@@ -62,14 +63,4 @@ public class PolicyApplicationController {
         PolicyApplicationResponseDTO response = applicationService.updateStatus(id, status, remarks);
         return ResponseEntity.ok(ApiResponse.success("Application status updated", response));
     }
-
-    @GetMapping("/admin/all")
-    public ResponseEntity<ApiResponse<PageResponseDTO<PolicyApplicationResponseDTO>>> allApplications(
-            @RequestParam(required = false) ApplicationStatus status,
-            @PageableDefault(size = 10, sort = "appliedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-
-        PageResponseDTO<PolicyApplicationResponseDTO> response = applicationService.getAllApplicationsPaged(status, pageable);
-        return ResponseEntity.ok(ApiResponse.success("Applications fetched", response));
-    }
-
 }

@@ -32,27 +32,6 @@ public class PolicyController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PolicyResponseDTO>>> getAllPolicies() {
-        return ResponseEntity.ok(ApiResponse.success("Policies fetched", policyService.getAllActivePolicies()));
-    }
-
-    @GetMapping("/category/{category}")
-    public ResponseEntity<ApiResponse<List<PolicyResponseDTO>>> getByCategory(@PathVariable InsuranceCategory category) {
-        return ResponseEntity.ok(ApiResponse.success("Policies fetched", policyService.getPoliciesByCategory(category)));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<PolicyResponseDTO>> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.success("Policy fetched", policyService.getPolicyById(id)));
-    }
-
-    @PatchMapping("/admin/{id}/deactivate")
-    public ResponseEntity<ApiResponse<Void>> deactivate(@PathVariable Long id) {
-        policyService.deactivatePolicy(id);
-        return ResponseEntity.ok(ApiResponse.success("Policy deactivated", null));
-    }
-
-    @GetMapping
     public ResponseEntity<ApiResponse<PageResponseDTO<PolicyResponseDTO>>> getAllPolicies(
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
@@ -67,4 +46,14 @@ public class PolicyController {
         return ResponseEntity.ok(ApiResponse.success("Policies fetched", policyService.getPoliciesByCategoryPaged(category, pageable)));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<PolicyResponseDTO>> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success("Policy fetched", policyService.getPolicyById(id)));
+    }
+
+    @PatchMapping("/admin/{id}/deactivate")
+    public ResponseEntity<ApiResponse<Void>> deactivate(@PathVariable Long id) {
+        policyService.deactivatePolicy(id);
+        return ResponseEntity.ok(ApiResponse.success("Policy deactivated", null));
+    }
 }
