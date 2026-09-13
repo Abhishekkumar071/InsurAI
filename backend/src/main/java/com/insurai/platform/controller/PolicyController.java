@@ -2,11 +2,15 @@ package com.insurai.platform.controller;
 
 import com.insurai.platform.dto.request.PolicyRequestDTO;
 import com.insurai.platform.dto.response.ApiResponse;
+import com.insurai.platform.dto.response.PageResponseDTO;
 import com.insurai.platform.dto.response.PolicyResponseDTO;
 import com.insurai.platform.entity.InsuranceCategory;
 import com.insurai.platform.service.PolicyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,4 +51,20 @@ public class PolicyController {
         policyService.deactivatePolicy(id);
         return ResponseEntity.ok(ApiResponse.success("Policy deactivated", null));
     }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<PageResponseDTO<PolicyResponseDTO>>> getAllPolicies(
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        return ResponseEntity.ok(ApiResponse.success("Policies fetched", policyService.getAllActivePoliciesPaged(pageable)));
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<ApiResponse<PageResponseDTO<PolicyResponseDTO>>> getByCategory(
+            @PathVariable InsuranceCategory category,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        return ResponseEntity.ok(ApiResponse.success("Policies fetched", policyService.getPoliciesByCategoryPaged(category, pageable)));
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.insurai.platform.service.impl;
 
 import com.insurai.platform.dto.request.PolicyApplicationRequestDTO;
+import com.insurai.platform.dto.response.PageResponseDTO;
 import com.insurai.platform.dto.response.PolicyApplicationResponseDTO;
 import com.insurai.platform.entity.*;
 import com.insurai.platform.exception.BadRequestException;
@@ -12,6 +13,8 @@ import com.insurai.platform.repository.UserRepository;
 import com.insurai.platform.service.EmailService;
 import com.insurai.platform.service.PolicyApplicationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +69,15 @@ public class PolicyApplicationServiceImpl implements PolicyApplicationService {
                 : applicationRepository.findAllByOrderByAppliedAtDesc();
 
         return applications.stream().map(this::mapToResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public PageResponseDTO<PolicyApplicationResponseDTO> getAllApplicationsPaged(ApplicationStatus statusFilter, Pageable pageable) {
+        Page<PolicyApplication> page = (statusFilter != null)
+                ? applicationRepository.findByStatus(statusFilter, pageable)
+                : applicationRepository.findAll(pageable);
+
+        return PageResponseDTO.from(page.map(this::mapToResponse));
     }
 
     @Override

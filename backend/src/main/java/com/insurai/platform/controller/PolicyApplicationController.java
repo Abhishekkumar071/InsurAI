@@ -2,11 +2,15 @@ package com.insurai.platform.controller;
 
 import com.insurai.platform.dto.request.PolicyApplicationRequestDTO;
 import com.insurai.platform.dto.response.ApiResponse;
+import com.insurai.platform.dto.response.PageResponseDTO;
 import com.insurai.platform.dto.response.PolicyApplicationResponseDTO;
 import com.insurai.platform.entity.ApplicationStatus;
 import com.insurai.platform.service.PolicyApplicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -58,4 +62,14 @@ public class PolicyApplicationController {
         PolicyApplicationResponseDTO response = applicationService.updateStatus(id, status, remarks);
         return ResponseEntity.ok(ApiResponse.success("Application status updated", response));
     }
+
+    @GetMapping("/admin/all")
+    public ResponseEntity<ApiResponse<PageResponseDTO<PolicyApplicationResponseDTO>>> allApplications(
+            @RequestParam(required = false) ApplicationStatus status,
+            @PageableDefault(size = 10, sort = "appliedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        PageResponseDTO<PolicyApplicationResponseDTO> response = applicationService.getAllApplicationsPaged(status, pageable);
+        return ResponseEntity.ok(ApiResponse.success("Applications fetched", response));
+    }
+
 }

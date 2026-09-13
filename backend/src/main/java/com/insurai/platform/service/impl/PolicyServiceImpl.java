@@ -1,6 +1,7 @@
 package com.insurai.platform.service.impl;
 
 import com.insurai.platform.dto.request.PolicyRequestDTO;
+import com.insurai.platform.dto.response.PageResponseDTO;
 import com.insurai.platform.dto.response.PolicyResponseDTO;
 import com.insurai.platform.entity.InsuranceCategory;
 import com.insurai.platform.entity.Policy;
@@ -8,6 +9,8 @@ import com.insurai.platform.exception.ResourceNotFoundException;
 import com.insurai.platform.repository.PolicyRepository;
 import com.insurai.platform.service.PolicyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +70,20 @@ public class PolicyServiceImpl implements PolicyService {
                 .orElseThrow(() -> new ResourceNotFoundException("Policy not found with ID: " + id));
         policy.setIsActive(false);
         policyRepository.save(policy);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponseDTO<PolicyResponseDTO> getAllActivePoliciesPaged(Pageable pageable) {
+        Page<Policy> page = policyRepository.findAllByIsActiveTrue(pageable);
+        return PageResponseDTO.from(page.map(this::mapToResponse));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponseDTO<PolicyResponseDTO> getPoliciesByCategoryPaged(InsuranceCategory category, Pageable pageable) {
+        Page<Policy> page = policyRepository.findByCategoryAndIsActiveTrue(category, pageable);
+        return PageResponseDTO.from(page.map(this::mapToResponse));
     }
 
     private PolicyResponseDTO mapToResponse(Policy policy) {

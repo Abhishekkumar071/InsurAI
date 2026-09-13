@@ -2,6 +2,8 @@ package com.insurai.platform.repository;
 
 import com.insurai.platform.entity.ApplicationStatus;
 import com.insurai.platform.entity.PolicyApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +19,9 @@ public interface PolicyApplicationRepository extends JpaRepository<PolicyApplica
     List<PolicyApplication> findAllByOrderByAppliedAtDesc();
 
     boolean existsByUser_EmailAndPolicy_IdAndStatus(String email, Long policyId, ApplicationStatus status);
+
+    // Paginated variants
+    Page<PolicyApplication> findByStatus(ApplicationStatus status, Pageable pageable);
+    Page<PolicyApplication> findAll(Pageable pageable);
+
 }
