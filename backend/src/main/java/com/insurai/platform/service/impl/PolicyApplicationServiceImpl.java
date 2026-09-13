@@ -9,10 +9,12 @@ import com.insurai.platform.exception.ResourceNotFoundException;
 import com.insurai.platform.repository.PolicyApplicationRepository;
 import com.insurai.platform.repository.PolicyRepository;
 import com.insurai.platform.repository.UserRepository;
+import com.insurai.platform.service.EmailService;
 import com.insurai.platform.service.PolicyApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +26,7 @@ public class PolicyApplicationServiceImpl implements PolicyApplicationService {
     private final PolicyApplicationRepository applicationRepository;
     private final UserRepository userRepository;
     private final PolicyRepository policyRepository;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -82,8 +85,20 @@ public class PolicyApplicationServiceImpl implements PolicyApplicationService {
         application.setStatus(newStatus);
         application.setAdminRemarks(remarks);
 
-        return mapToResponse(applicationRepository.save(application));
+        PolicyApplication saved = applicationRepository.save(application);
+
+        // Fire-and-forget email notification — does not block or fail this transaction
+        emailService.sendApplicationStatusEmail(
+                saved.getUser().getEmail(),
+                saved.getUser().getFullName(),
+                saved.getPolicy().getPolicyName(),
+                saved.getStatus().name(),
+                saved.getAdminRemarks()
+        );
+
+        return mapToResponse(saved);
     }
+
 
     private PolicyApplicationResponseDTO mapToResponse(PolicyApplication app) {
         return PolicyApplicationResponseDTO.builder()

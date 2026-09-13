@@ -26,6 +26,11 @@
 			<version>1.4.6</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 		<!-- Web (MVC + embedded Tomcat) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -9,6 +9,7 @@ import com.insurai.platform.exception.DuplicateResourceException;
 import com.insurai.platform.exception.ResourceNotFoundException;
 import com.insurai.platform.repository.PaymentRepository;
 import com.insurai.platform.repository.PolicyApplicationRepository;
+import com.insurai.platform.service.EmailService;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.Utils;
@@ -28,6 +29,7 @@ public class PaymentServiceImpl implements com.insurai.platform.service.PaymentS
     private final PaymentRepository paymentRepository;
     private final PolicyApplicationRepository applicationRepository;
     private final RazorpayClient razorpayClient;
+    private final EmailService emailService;
 
     @Value("${razorpay.key-id}")
     private String razorpayKeyId;
@@ -114,6 +116,13 @@ public class PaymentServiceImpl implements com.insurai.platform.service.PaymentS
             PolicyApplication application = payment.getApplication();
             application.setStatus(ApplicationStatus.ACTIVE);
             applicationRepository.save(application);
+
+            emailService.sendPaymentSuccessEmail(
+                    application.getUser().getEmail(),
+                    application.getUser().getFullName(),
+                    application.getPolicy().getPolicyName(),
+                    payment.getAmount().toString()
+            );
 
             return PaymentResponseDTO.builder()
                     .paymentId(payment.getId())
