@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Home from '@/pages/Home';
 import PolicyListing from '@/pages/PolicyListing';
 import PolicyDetail from '@/pages/PolicyDetail';
@@ -9,10 +10,15 @@ import AppointmentBooking from '@/pages/AppointmentBooking';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import NotFound from '@/pages/NotFound';
 import ProtectedRoute from './ProtectedRoute';
+import PageTransition from '@/components/layout/PageTransition';
 
 export default function AppRoutes() {
+  const location = useLocation();
+
   return (
-    <Routes>
+    <AnimatePresence mode="wait">
+      <PageTransition key={location.pathname}>
+        <Routes location={location}>
       <Route path="/" element={<Home />} />
       <Route path="/policies" element={<PolicyListing />} />
       <Route path="/policies/:id" element={<PolicyDetail />} />
@@ -39,6 +45,8 @@ export default function AppRoutes() {
       />
 
       <Route path="*" element={<NotFound />} />
-    </Routes>
+        </Routes>
+      </PageTransition>
+    </AnimatePresence>
   );
 }

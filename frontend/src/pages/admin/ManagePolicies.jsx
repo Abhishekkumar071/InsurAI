@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Plus, Ban } from 'lucide-react';
+import { Plus, Ban, FileStack } from 'lucide-react';
 import { policyApi } from '@/api/policyApi';
 import { CATEGORY_META, formatCurrency } from '@/utils/constants';
 import AdminTable from '@/components/admin/AdminTable';
@@ -13,6 +13,8 @@ import Badge from '@/components/common/Badge';
 import Modal from '@/components/common/Modal';
 import Input from '@/components/common/Input';
 import Select from '@/components/common/Select';
+import Pagination from '@/components/common/Pagination';
+import EmptyState from '@/components/common/EmptyState';
 
 const schema = z.object({
   policyName: z.string().min(3, 'Minimum 3 characters'),
@@ -29,10 +31,15 @@ const categoryOptions = Object.entries(CATEGORY_META).map(([value, meta]) => ({ 
 
 export default function ManagePolicies() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [page, setPage] = useState(0);
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({ queryKey: ['policies'], queryFn: policyApi.getAll });
-  const policies = data?.data || [];
+  const { data, isLoading } = useQuery({
+    queryKey: ['policies', page],
+    queryFn: () => policyApi.getAll({ page, size: 10, sort: 'createdAt,desc' }),
+  });
+  const pageData = data?.data;
+  const policies = pageData?.content || [];
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
@@ -65,7 +72,11 @@ export default function ManagePolicies() {
         <Button size="sm" onClick={() => setModalOpen(true)}><Plus size={16} /> New Policy</Button>
       </div>
 
-      {!isLoading && (
+      {isLoading ? (
+        <div className="space-y-2 rounded-xl border border-gray-200 p-6">{Array.from({ length: 5 }, (_, index) => <div key={index} className="h-10 animate-pulse rounded bg-gray-100" />)}</div>
+      ) : policies.length === 0 ? (
+        <EmptyState icon={FileStack} title="No policies found" description="Create a policy to make it available to customers." />
+      ) : !isLoading && (
         <AdminTable columns={['Name', 'Category', 'Premium', 'Coverage', 'Status', '']}>
           {policies.map((p) => (
             <tr key={p.id}>
@@ -90,6 +101,7 @@ export default function ManagePolicies() {
           ))}
         </AdminTable>
       )}
+      <Pagination pageData={pageData} onPageChange={setPage} />
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Create New Policy">
         <form onSubmit={handleSubmit((d) => createMutation.mutate(d))} className="space-y-4">

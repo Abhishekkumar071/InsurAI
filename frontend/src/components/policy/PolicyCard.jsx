@@ -10,9 +10,9 @@ export default function PolicyCard({ policy }) {
   const Icon = meta.icon;
 
   return (
-    <Card hoverable className="p-5 flex flex-col">
+    <Card hoverable className="group flex flex-col overflow-hidden p-5">
       <div className="flex items-start justify-between mb-3">
-        <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-50 transition-colors group-hover:bg-primary-100">
           {meta.asset ? (
             <img src={meta.asset} alt="" className="w-7 h-7 object-contain" />
           ) : (
@@ -22,16 +22,16 @@ export default function PolicyCard({ policy }) {
         <Badge color={meta.color || 'gray'}>{meta.label || policy.category}</Badge>
       </div>
 
-      <h3 className="text-base font-semibold text-gray-900">{policy.policyName}</h3>
+      <h3 className="text-base font-bold text-gray-900 transition-colors group-hover:text-primary-700">{policy.policyName}</h3>
       <p className="mt-1.5 text-sm text-gray-500 line-clamp-2">{policy.description}</p>
 
       <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-        <div>
-          <p className="text-gray-400">Premium</p>
+        <div className="rounded-lg bg-gray-50 p-2">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-gray-400">Premium</p>
           <p className="font-semibold text-gray-900">{formatCurrency(policy.basePremium)}/yr</p>
         </div>
-        <div>
-          <p className="text-gray-400">Coverage</p>
+        <div className="rounded-lg bg-gray-50 p-2">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-gray-400">Coverage</p>
           <p className="font-semibold text-gray-900">{formatCurrency(policy.coverageAmount)}</p>
         </div>
       </div>

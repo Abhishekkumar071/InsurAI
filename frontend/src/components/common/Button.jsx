@@ -1,11 +1,12 @@
 import { Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const VARIANTS = {
-  primary: 'bg-primary-600 text-white hover:bg-primary-700 focus-visible:outline-primary-600',
-  accent: 'bg-accent-500 text-white hover:bg-accent-600 focus-visible:outline-accent-500',
-  outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50 focus-visible:outline-primary-600',
+  primary: 'bg-primary-600 text-white shadow-sm shadow-primary-600/20 hover:bg-primary-700 hover:shadow-md focus-visible:outline-primary-600',
+  accent: 'bg-accent-500 text-white shadow-sm shadow-accent-500/20 hover:bg-accent-600 hover:shadow-md focus-visible:outline-accent-500',
+  outline: 'border border-gray-300 bg-white text-gray-700 shadow-sm hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-primary-600',
   ghost: 'text-gray-700 hover:bg-gray-100 focus-visible:outline-primary-600',
-  danger: 'bg-danger-600 text-white hover:bg-red-700 focus-visible:outline-danger-600',
+  danger: 'bg-danger-600 text-white shadow-sm hover:bg-red-700 hover:shadow-md focus-visible:outline-danger-600',
 };
 
 const SIZES = {
@@ -25,19 +26,20 @@ export default function Button({
   ...props
 }) {
   return (
-    <button
+    <motion.button
       type={type}
       disabled={disabled || loading}
       className={`
-        inline-flex items-center justify-center gap-2 rounded-lg font-medium
-        transition-colors duration-150 focus-visible:outline focus-visible:outline-2
+        inline-flex items-center justify-center gap-2 rounded-xl font-semibold
+        transition-all duration-150 focus-visible:outline focus-visible:outline-2
         focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed
         ${VARIANTS[variant]} ${SIZES[size]} ${className}
       `}
       {...props}
+      whileTap={{ scale: 0.97 }}
     >
       {loading && <Loader2 className="h-4 w-4 animate-spin" />}
       {children}
-    </button>
+    </motion.button>
   );
 }

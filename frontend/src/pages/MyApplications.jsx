@@ -3,9 +3,9 @@ import { FileQuestion } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { applicationApi } from '@/api/applicationApi';
 import ApplicationCard from '@/components/applications/ApplicationCard';
-import Spinner from '@/components/common/Spinner';
 import EmptyState from '@/components/common/EmptyState';
 import Button from '@/components/common/Button';
+import Skeleton from '@/components/common/Skeleton';
 
 export default function MyApplications() {
   const { data, isLoading } = useQuery({
@@ -21,7 +21,15 @@ export default function MyApplications() {
       <p className="text-gray-500 text-sm mb-8">Track status, upload documents, and pay premiums</p>
 
       {isLoading ? (
-        <Spinner fullPage />
+        <div className="space-y-4">
+          {Array.from({ length: 3 }, (_, index) => (
+            <div key={index} className="rounded-xl border border-gray-200 bg-white p-5">
+              <Skeleton className="h-5 w-2/5" />
+              <Skeleton className="mt-3 h-4 w-3/5" />
+              <Skeleton className="mt-6 h-10 w-full" />
+            </div>
+          ))}
+        </div>
       ) : applications.length === 0 ? (
         <EmptyState
           icon={FileQuestion}

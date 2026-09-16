@@ -62,7 +62,7 @@ export default function HeroCarousel() {
   const slide = SLIDES[index];
 
   return (
-    <section className="relative h-[420px] md:h-[480px] overflow-hidden bg-gray-900">
+    <section className="relative h-[420px] overflow-hidden bg-gray-900 md:h-[480px]">
       <AnimatePresence mode="wait">
         <motion.div
           key={slide.category}
@@ -75,7 +75,7 @@ export default function HeroCarousel() {
           {slide.image ? (
             <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
           ) : null}
-          <div className={`absolute inset-0 bg-gradient-to-r ${slide.gradient}`} />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/75 via-gray-950/25 to-transparent" />
         </motion.div>
       </AnimatePresence>
 
@@ -88,7 +88,7 @@ export default function HeroCarousel() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -24 }}
             transition={{ duration: 0.4 }}
-            className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-6 md:p-8 max-w-sm"
+            className="max-w-sm rounded-2xl border border-white/50 bg-white/95 p-6 shadow-2xl shadow-gray-950/20 backdrop-blur md:p-8"
           >
             <h2 className="text-2xl font-bold text-gray-900">{slide.title}</h2>
             <p className="mt-2 text-sm text-gray-600 leading-relaxed">{slide.subtitle}</p>
@@ -105,13 +105,15 @@ export default function HeroCarousel() {
       {/* Controls */}
       <button
         onClick={prev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center backdrop-blur"
+        aria-label="Previous slide"
+        className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur transition-colors hover:bg-white/40"
       >
         <ChevronLeft size={20} />
       </button>
       <button
         onClick={next}
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center backdrop-blur ml-12"
+        aria-label="Next slide"
+        className="absolute left-4 top-1/2 ml-12 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur transition-colors hover:bg-white/40"
         style={{ left: '3.25rem' }}
       >
         <ChevronRight size={20} />

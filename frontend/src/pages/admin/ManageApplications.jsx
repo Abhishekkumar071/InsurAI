@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Check, X, Download, ShieldCheck } from 'lucide-react';
+import { Check, X, Download, ShieldCheck, ClipboardList } from 'lucide-react';
 import { applicationApi } from '@/api/applicationApi';
 import { documentApi } from '@/api/documentApi';
 import { APPLICATION_STATUS_META, formatDate } from '@/utils/constants';
@@ -10,6 +10,8 @@ import Badge from '@/components/common/Badge';
 import Select from '@/components/common/Select';
 import Modal from '@/components/common/Modal';
 import Button from '@/components/common/Button';
+import Pagination from '@/components/common/Pagination';
+import EmptyState from '@/components/common/EmptyState';
 
 function ApplicationDocuments({ applicationId }) {
   const queryClient = useQueryClient();
@@ -75,16 +77,18 @@ const STATUS_FILTERS = [
 
 export default function ManageApplications() {
   const [statusFilter, setStatusFilter] = useState('');
+  const [page, setPage] = useState(0);
   const [actionTarget, setActionTarget] = useState(null); // { id, status }
   const [remarks, setRemarks] = useState('');
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['applications', 'admin', statusFilter],
-    queryFn: () => applicationApi.getAllAdmin(statusFilter || undefined),
+    queryKey: ['applications', 'admin', statusFilter, page],
+    queryFn: () => applicationApi.getAllAdmin(statusFilter || undefined, { page, size: 10, sort: 'appliedAt,desc' }),
   });
 
-  const applications = data?.data || [];
+  const pageData = data?.data;
+  const applications = pageData?.content || [];
 
   const updateMutation = useMutation({
     mutationFn: ({ id, status, remarks }) => applicationApi.updateStatus(id, status, remarks),
@@ -97,16 +101,25 @@ export default function ManageApplications() {
     onError: (err) => toast.error(err.response?.data?.message || 'Update failed'),
   });
 
+  const handleStatusChange = (value) => {
+    setStatusFilter(value);
+    setPage(0);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-lg font-semibold text-gray-900">Applications</h2>
         <div className="w-48">
-          <Select options={STATUS_FILTERS.slice(1)} placeholder="All statuses" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} />
+          <Select options={STATUS_FILTERS.slice(1)} placeholder="All statuses" value={statusFilter} onChange={(e) => handleStatusChange(e.target.value)} />
         </div>
       </div>
 
-      {!isLoading && (
+      {isLoading ? (
+        <div className="space-y-2 rounded-xl border border-gray-200 p-6">{Array.from({ length: 5 }, (_, index) => <div key={index} className="h-10 animate-pulse rounded bg-gray-100" />)}</div>
+      ) : applications.length === 0 ? (
+        <EmptyState icon={ClipboardList} title="No applications found" description="Applications will appear here when customers apply." />
+      ) : !isLoading && (
         <AdminTable columns={['Applicant', 'Policy', 'Documents', 'Status', 'Applied', 'Actions']}>
           {applications.map((app) => {
             const meta = APPLICATION_STATUS_META[app.status] || {};
@@ -145,6 +158,7 @@ export default function ManageApplications() {
           })}
         </AdminTable>
       )}
+      <Pagination pageData={pageData} onPageChange={setPage} />
 
       <Modal
         open={!!actionTarget}

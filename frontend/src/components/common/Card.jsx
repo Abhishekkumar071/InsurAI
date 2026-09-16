@@ -2,8 +2,8 @@ export default function Card({ children, className = '', hoverable = false, ...p
   return (
     <div
       className={`
-        bg-white rounded-xl border border-gray-200 shadow-sm
-        ${hoverable ? 'transition-shadow hover:shadow-md' : ''}
+        bg-white rounded-2xl border border-gray-200/80 shadow-sm
+        ${hoverable ? 'transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md' : ''}
         ${className}
       `}
       {...props}

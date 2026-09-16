@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { appointmentApi } from '@/api/appointmentApi';
+import { CalendarClock } from 'lucide-react';
 import { APPOINTMENT_STATUS_META, formatDate } from '@/utils/constants';
 import AdminTable from '@/components/admin/AdminTable';
 import Badge from '@/components/common/Badge';
 import Select from '@/components/common/Select';
+import EmptyState from '@/components/common/EmptyState';
 
 const STATUS_OPTIONS = [
   { value: 'REQUESTED', label: 'Requested' },
@@ -43,7 +45,11 @@ export default function ManageAppointments() {
         </div>
       </div>
 
-      {!isLoading && (
+      {isLoading ? (
+        <div className="space-y-2 rounded-xl border border-gray-200 p-6">{Array.from({ length: 5 }, (_, index) => <div key={index} className="h-10 animate-pulse rounded bg-gray-100" />)}</div>
+      ) : appointments.length === 0 ? (
+        <EmptyState icon={CalendarClock} title="No appointments found" description="Appointment requests will appear here." />
+      ) : !isLoading && (
         <AdminTable columns={['Requested By', 'Policy', 'Date & Time', 'Status', 'Update']}>
           {appointments.map((a) => {
             const meta = APPOINTMENT_STATUS_META[a.status] || {};

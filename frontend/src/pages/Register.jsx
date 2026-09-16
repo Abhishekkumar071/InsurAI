@@ -38,11 +38,13 @@ export default function Register() {
   });
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gray-50">
-      <Card className="w-full max-w-md p-8">
+    <div className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50 via-white to-orange-50/60 px-4 py-14">
+      <div className="pointer-events-none absolute -left-24 top-20 h-64 w-64 rounded-full bg-primary-200/30 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-10 h-64 w-64 rounded-full bg-orange-200/30 blur-3xl" />
+      <Card className="relative w-full max-w-md border-white/80 bg-white/90 p-8 shadow-xl shadow-primary-900/10 backdrop-blur">
         <div className="flex flex-col items-center mb-6">
-          <ShieldCheck className="text-primary-600 mb-2" size={32} />
-          <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
+          <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-lg shadow-primary-600/20"><ShieldCheck size={27} /></span>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Create your account</h1>
           <p className="text-sm text-gray-500 mt-1">Start comparing and applying for policies</p>
         </div>
 

@@ -49,8 +49,8 @@ export default function PolicyDetail() {
   const benefits = (policy.benefits || '').split(/[,.]\s*/).filter(Boolean);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-6">
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <button onClick={() => navigate(-1)} className="mb-8 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-semibold text-gray-500 hover:bg-gray-100 hover:text-gray-800">
         <ArrowLeft size={16} /> Back
       </button>
 
@@ -58,13 +58,13 @@ export default function PolicyDetail() {
         <div className="md:col-span-2 space-y-6">
           <div>
             <Badge color={meta.color || 'gray'}>{meta.label || policy.category}</Badge>
-            <h1 className="mt-3 text-2xl md:text-3xl font-bold text-gray-900">{policy.policyName}</h1>
-            <p className="mt-2 text-gray-600">{policy.description}</p>
+            <h1 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">{policy.policyName}</h1>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-gray-600">{policy.description}</p>
           </div>
 
           {benefits.length > 0 && (
             <Card className="p-6">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">Key Benefits</h3>
+              <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-gray-900">Key Benefits</h3>
               <ul className="space-y-2">
                 {benefits.map((b, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
@@ -86,7 +86,7 @@ export default function PolicyDetail() {
 
         {/* Sticky apply card */}
         <div>
-          <Card className="p-6 sticky top-24">
+          <Card className="sticky top-24 border-primary-100 bg-gradient-to-b from-primary-50/70 to-white p-6 shadow-lg shadow-primary-900/5">
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Annual Premium</span>

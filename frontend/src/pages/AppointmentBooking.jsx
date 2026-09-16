@@ -64,7 +64,7 @@ export default function AppointmentBooking() {
     mutation.mutate(data);
   };
 
-  const policyOptions = (policiesData?.data || []).map((p) => ({ value: p.id, label: p.policyName }));
+  const policyOptions = (policiesData?.data?.content || []).map((p) => ({ value: p.id, label: p.policyName }));
   const myAppointments = myAppointmentsData?.data || [];
 
   return (
