@@ -43,6 +43,11 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/policies/**").permitAll()   // browsing public hai
                         .requestMatchers("/api/v1/policies/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/audit-logs/admin/**").hasRole("ADMIN")
