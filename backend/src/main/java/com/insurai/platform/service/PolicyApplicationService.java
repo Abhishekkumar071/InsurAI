@@ -12,6 +12,8 @@ public interface PolicyApplicationService {
     PolicyApplicationResponseDTO apply(String email, PolicyApplicationRequestDTO requestDto);
     List<PolicyApplicationResponseDTO> getMyApplications(String email);
     List<PolicyApplicationResponseDTO> getAllApplications(ApplicationStatus statusFilter);
-    PolicyApplicationResponseDTO updateStatus(Long applicationId, ApplicationStatus newStatus, String remarks);
+
+    PolicyApplicationResponseDTO updateStatus(Long applicationId, ApplicationStatus newStatus, String remarks, String performedByEmail);   // ← ye line update karo
+
     PageResponseDTO<PolicyApplicationResponseDTO> getAllApplicationsPaged(ApplicationStatus statusFilter, Pageable pageable);
 }

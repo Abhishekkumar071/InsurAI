@@ -13,7 +13,7 @@ public interface PolicyService {
     List<PolicyResponseDTO> getAllActivePolicies();
     List<PolicyResponseDTO> getPoliciesByCategory(InsuranceCategory category);
     PolicyResponseDTO getPolicyById(Long id);
-    void deactivatePolicy(Long id);
+    void deactivatePolicy(Long id, String performedByEmail);
     PageResponseDTO<PolicyResponseDTO> getAllActivePoliciesPaged(Pageable pageable);
     PageResponseDTO<PolicyResponseDTO> getPoliciesByCategoryPaged(InsuranceCategory category, Pageable pageable);
 }

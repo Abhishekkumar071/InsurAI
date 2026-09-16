@@ -58,9 +58,10 @@ public class PolicyApplicationController {
     public ResponseEntity<ApiResponse<PolicyApplicationResponseDTO>> updateStatus(
             @PathVariable Long id,
             @RequestParam ApplicationStatus status,
-            @RequestParam(required = false) String remarks) {
+            @RequestParam(required = false) String remarks,
+            Authentication authentication) {
 
-        PolicyApplicationResponseDTO response = applicationService.updateStatus(id, status, remarks);
+        PolicyApplicationResponseDTO response = applicationService.updateStatus(id, status, remarks, authentication.getName());
         return ResponseEntity.ok(ApiResponse.success("Application status updated", response));
     }
 }

@@ -10,6 +10,7 @@ import com.insurai.platform.exception.ResourceNotFoundException;
 import com.insurai.platform.repository.PolicyApplicationRepository;
 import com.insurai.platform.repository.PolicyRepository;
 import com.insurai.platform.repository.UserRepository;
+import com.insurai.platform.service.AuditLogService;
 import com.insurai.platform.service.EmailService;
 import com.insurai.platform.service.PolicyApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class PolicyApplicationServiceImpl implements PolicyApplicationService {
     private final UserRepository userRepository;
     private final PolicyRepository policyRepository;
     private final EmailService emailService;
+    private final AuditLogService auditLogService;
 
     @Override
     @Transactional
@@ -82,7 +84,7 @@ public class PolicyApplicationServiceImpl implements PolicyApplicationService {
 
     @Override
     @Transactional
-    public PolicyApplicationResponseDTO updateStatus(Long applicationId, ApplicationStatus newStatus, String remarks) {
+    public PolicyApplicationResponseDTO updateStatus(Long applicationId, ApplicationStatus newStatus, String remarks, String performedByEmail) {
         PolicyApplication application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + applicationId));
 
@@ -107,7 +109,13 @@ public class PolicyApplicationServiceImpl implements PolicyApplicationService {
                 saved.getStatus().name(),
                 saved.getAdminRemarks()
         );
-
+        auditLogService.log(
+                "POLICY_APPLICATION",
+                saved.getId(),
+                saved.getStatus().name(),
+                performedByEmail,   // niche dekho ye kahan se aayega
+                remarks
+        );
         return mapToResponse(saved);
     }
 

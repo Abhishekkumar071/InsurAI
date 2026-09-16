@@ -7,6 +7,7 @@ import com.insurai.platform.entity.InsuranceCategory;
 import com.insurai.platform.entity.Policy;
 import com.insurai.platform.exception.ResourceNotFoundException;
 import com.insurai.platform.repository.PolicyRepository;
+import com.insurai.platform.service.AuditLogService;
 import com.insurai.platform.service.PolicyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class PolicyServiceImpl implements PolicyService {
 
     private final PolicyRepository policyRepository;
+    private final AuditLogService auditLogService;
 
     @Override
     @Transactional
@@ -65,11 +67,13 @@ public class PolicyServiceImpl implements PolicyService {
 
     @Override
     @Transactional
-    public void deactivatePolicy(Long id) {
+    public void deactivatePolicy(Long id, String performedByEmail) {
         Policy policy = policyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Policy not found with ID: " + id));
         policy.setIsActive(false);
         policyRepository.save(policy);
+
+        auditLogService.log("POLICY", policy.getId(), "DEACTIVATED", performedByEmail, policy.getPolicyName());
     }
 
     @Override

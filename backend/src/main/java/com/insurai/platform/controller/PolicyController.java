@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,8 +53,8 @@ public class PolicyController {
     }
 
     @PatchMapping("/admin/{id}/deactivate")
-    public ResponseEntity<ApiResponse<Void>> deactivate(@PathVariable Long id) {
-        policyService.deactivatePolicy(id);
+    public ResponseEntity<ApiResponse<Void>> deactivate(@PathVariable Long id, Authentication authentication) {
+        policyService.deactivatePolicy(id, authentication.getName());
         return ResponseEntity.ok(ApiResponse.success("Policy deactivated", null));
     }
 }
