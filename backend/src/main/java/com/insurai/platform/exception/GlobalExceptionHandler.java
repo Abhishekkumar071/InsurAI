@@ -2,6 +2,7 @@ package com.insurai.platform.exception;
 
 import com.insurai.platform.dto.response.ApiResponse;
 import com.insurai.platform.dto.response.ErrorDetail;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,6 +13,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+@Slf4j
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -58,10 +61,16 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage(), null));
     }
 
-    // Catch-all safety net — kabhi bhi stack trace client ko nahi dikhna chahiye
+    // Catch-all safety net — log and return error details
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGeneric(Exception ex) {
+        log.error("Unexpected error occurred", ex);
+        String message = "Something went wrong. Please try again later.";
+        // In development, include the actual error for debugging
+        if (ex.getMessage() != null && !ex.getMessage().isEmpty()) {
+            message = "Error: " + ex.getMessage();
+        }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error("Something went wrong. Please try again later.", null));
+                .body(ApiResponse.error(message, null));
     }
 }

@@ -28,4 +28,8 @@ public class FileStorageConfig {
             throw new RuntimeException("Could not create upload directory: " + uploadDir, e);
         }
     }
+
+    public Path getUploadPath() {
+        return uploadPath;
+    }
 }

@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import ChatWidget from '@/components/chat/ChatWidget';
 import AppRoutes from '@/routes/AppRoutes';
 import { useAuthStore } from '@/store/authStore';
 
@@ -43,6 +44,7 @@ function AppShell() {
         <AppRoutes />
       </main>
       <Footer />
+      <ChatWidget />
     </div>
   );
 }
