@@ -7,9 +7,12 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
 
+  # ============================================================
+  # MAIL CONFIGURATION (Uses environment variables from .env)
+  # ============================================================
   mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     properties:
@@ -19,8 +22,13 @@ spring:
           starttls:
             enable: true
 
+  # ============================================================
+  # DATABASE CONFIGURATION (Uses environment variables from .env)
+  # For local development: MySQL must be running on localhost:3306
+  # For AWS deployment: Update .env with AWS RDS credentials
+  # ============================================================
   datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:insurai_db}?createDatabaseIfNotExist=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
@@ -32,20 +40,35 @@ spring:
       hibernate:
         format_sql: true
 
+# ============================================================
+# SERVER CONFIGURATION
+# ============================================================
 server:
   port: ${SERVER_PORT:8080}
 
+# ============================================================
+# JWT CONFIGURATION (Uses environment variables from .env)
+# ============================================================
 jwt:
   secret: ${JWT_SECRET}
   expiration-ms: ${JWT_EXPIRATION_MS}
 
+# ============================================================
+# RAZORPAY CONFIGURATION (Uses environment variables from .env)
+# ============================================================
 razorpay:
   key-id: ${RAZORPAY_KEY_ID}
   key-secret: ${RAZORPAY_KEY_SECRET}
 
+# ============================================================
+# FILE UPLOAD CONFIGURATION
+# ============================================================
 file:
   upload-dir: ${FILE_UPLOAD_DIR}
 
+# ============================================================
+# GEMINI AI CONFIGURATION (Uses environment variables from .env)
+# ============================================================
 gemini:
   api-key: ${GEMINI_API_KEY}
   model: ${GEMINI_MODEL}
