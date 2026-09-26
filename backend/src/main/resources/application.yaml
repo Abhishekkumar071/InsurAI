@@ -72,3 +72,7 @@ file:
 gemini:
   api-key: ${GEMINI_API_KEY}
   model: ${GEMINI_MODEL}
+
+recommendation:
+  service-url: http://localhost:8000
+  internal-api-key: a-long-random-shared-secret-change-this
