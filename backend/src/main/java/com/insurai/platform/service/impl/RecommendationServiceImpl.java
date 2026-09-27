@@ -1,11 +1,14 @@
 package com.insurai.platform.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.insurai.platform.dto.request.RecommendationRequestDTO;
 import com.insurai.platform.dto.response.RecommendationResponseDTO;
 import com.insurai.platform.entity.Users;
 import com.insurai.platform.repository.UserRepository;
 import com.insurai.platform.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -21,6 +24,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     private final RestClient recommendationRestClient;
     private final UserRepository userRepository;
+    private final ObjectMapper objectMapper;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -29,11 +33,15 @@ public class RecommendationServiceImpl implements RecommendationService {
             Users user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            Map<String, Object> requestBody = Map.of("userId", user.getId(), "topN", 5);
+            RecommendationRequestDTO requestBody = new RecommendationRequestDTO(user.getId(), 5);
+
+            String jsonBody = objectMapper.writeValueAsString(requestBody);
+            log.info("Sending recommendation request JSON: {}", jsonBody);
 
             Map<String, Object> response = recommendationRestClient.post()
                     .uri("/recommend")
-                    .body(requestBody)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(jsonBody)
                     .retrieve()
                     .body(Map.class);
 

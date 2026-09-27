@@ -75,4 +75,4 @@ gemini:
 
 recommendation:
   service-url: http://localhost:8000
-  internal-api-key: a-long-random-shared-secret-change-this
+  internal-api-key: 7f3c9a21e8b54d6f0a1c7e93b2d84f6a9c5e1b7d3f8a2c6e
