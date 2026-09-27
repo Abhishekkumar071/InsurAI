@@ -22,10 +22,10 @@ public class DataExportController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponse<DataExportResponseDTO>> exportUserData(
             @PathVariable Long userId,
-            @RequestHeader("X-Internal-Api-Key") String providedKey) {
+            @RequestHeader(value = "X-Internal-Api-Key", required = false) String providedKey) {
 
-        if (!internalApiKey.equals(providedKey)) {
-            throw new BadRequestException("Invalid internal API key");
+        if (providedKey == null || !internalApiKey.equals(providedKey)) {
+            throw new BadRequestException("Invalid or missing internal API key");
         }
 
         return ResponseEntity.ok(ApiResponse.success("Data exported", dataExportService.exportUserData(userId)));

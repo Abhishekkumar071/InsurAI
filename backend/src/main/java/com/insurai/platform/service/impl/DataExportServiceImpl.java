@@ -30,24 +30,20 @@ public class DataExportServiceImpl implements DataExportService {
 
     @Override
     public DataExportResponseDTO exportUserData(Long userId) {
-        UserProfile profile = userProfileRepository.findByUser_Email(
-                        userProfileRepository.findAll().stream()
-                                .filter(p -> p.getUser().getId().equals(userId))
-                                .findFirst()
-                                .map(p -> p.getUser().getEmail())
-                                .orElse(""))
-                .orElse(null);
+        UserProfile profile = userProfileRepository.findByUser_Id(userId).orElse(null);
 
         Integer age = null;
         String incomeBracket = null;
         Integer dependents = null;
         Boolean smoker = null;
+        String userEmail = "";
 
         if (profile != null) {
             age = Period.between(profile.getDateOfBirth(), LocalDate.now()).getYears();
             incomeBracket = profile.getIncomeBracket() != null ? profile.getIncomeBracket().name() : null;
             dependents = profile.getDependents();
             smoker = profile.getSmoker();
+            userEmail = profile.getUser().getEmail();
         }
 
         List<UserActivity> activities = userActivityRepository.findByUser_EmailOrderByTimestampDesc(
@@ -55,12 +51,14 @@ public class DataExportServiceImpl implements DataExportService {
 
         List<Long> viewedIds = activities.stream()
                 .filter(a -> a.getActionType() == ActionType.VIEWED || a.getActionType() == ActionType.COMPARED)
+                .filter(a -> a.getPolicy() != null)
                 .map(a -> a.getPolicy().getId())
                 .distinct()
                 .collect(Collectors.toList());
 
         List<Long> appliedIds = activities.stream()
                 .filter(a -> a.getActionType() == ActionType.APPLIED)
+                .filter(a -> a.getPolicy() != null)
                 .map(a -> a.getPolicy().getId())
                 .distinct()
                 .collect(Collectors.toList());
