@@ -6,6 +6,7 @@ import PolicyDetail from '@/pages/PolicyDetail';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import MyApplications from '@/pages/MyApplications';
+import ProfileSetup from '@/pages/ProfileSetup';
 import AppointmentBooking from '@/pages/AppointmentBooking';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import NotFound from '@/pages/NotFound';
@@ -31,6 +32,15 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <MyApplications />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile/setup"
+        element={
+          <ProtectedRoute>
+            <ProfileSetup />
           </ProtectedRoute>
         }
       />

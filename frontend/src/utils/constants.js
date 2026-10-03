@@ -9,16 +9,20 @@ import healthIcon from '@/assets/icons/arogya_aanjeevani.svg';
 import motorIcon from '@/assets/icons/Private_Car.svg';
 import travelIcon from '@/assets/icons/domestic_travel.svg';
 import homeIcon from '@/assets/icons/house-insu.svg';
+import childPlanIcon from '@/assets/logo/child-plan.svg';
+import groupLifeIcon from '@/assets/logo/group-life-insurance-icon.avif';
+import retirementPlanIcon from '@/assets/logo/retirement-plan.webp';
+import termLifeIcon from '@/assets/logo/term_life_insur.png';
 
 export const CATEGORY_META = {
-  TERM_LIFE:       { label: 'Term Life',        icon: ShieldCheck, color: 'primary' },
+  TERM_LIFE:       { label: 'Term Life',        icon: ShieldCheck, asset: termLifeIcon, color: 'primary' },
   HEALTH:          { label: 'Health',           icon: HeartPulse,  asset: healthIcon,  color: 'success' },
   MOTOR:           { label: 'Motor',            icon: Car,         asset: motorIcon,   color: 'accent' },
   TRAVEL:          { label: 'Travel',           icon: Plane,       asset: travelIcon,  color: 'primary' },
-  CHILD_PLAN:      { label: 'Child Plans',      icon: Baby,        color: 'accent' },
-  RETIREMENT:      { label: 'Retirement',       icon: Landmark,    color: 'primary' },
+  CHILD_PLAN:      { label: 'Child Plans',      icon: Baby,        asset: childPlanIcon, color: 'accent' },
+  RETIREMENT:      { label: 'Retirement',       icon: Landmark,    asset: retirementPlanIcon, color: 'primary' },
   HOME:            { label: 'Home',             icon: HomeIcon,    asset: homeIcon,    color: 'warning' },
-  GROUP_INSURANCE: { label: 'Group Insurance',  icon: Users,       color: 'success' },
+  GROUP_INSURANCE: { label: 'Group Insurance',  icon: Users,       asset: groupLifeIcon, color: 'success' },
 };
 
 export const APPLICATION_STATUS_META = {

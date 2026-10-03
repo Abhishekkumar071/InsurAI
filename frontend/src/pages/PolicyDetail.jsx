@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { policyApi } from '@/api/policyApi';
 import { applicationApi } from '@/api/applicationApi';
+import { activityApi } from '@/api/activityApi';
 import { useAuthStore } from '@/store/authStore';
 import { CATEGORY_META, formatCurrency } from '@/utils/constants';
 import Card from '@/components/common/Card';
@@ -20,6 +22,11 @@ export default function PolicyDetail() {
     queryKey: ['policy', id],
     queryFn: () => policyApi.getById(id),
   });
+
+  useEffect(() => {
+    if (!isAuthenticated || !data?.data?.id) return;
+    activityApi.log(data.data.id, 'VIEWED').catch(() => {});
+  }, [data?.data?.id, isAuthenticated]);
 
   const applyMutation = useMutation({
     mutationFn: () => applicationApi.apply(Number(id)),

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Phone, Mail } from 'lucide-react';
+import { Phone, Mail } from 'lucide-react';
 import { CATEGORY_META } from '@/utils/constants';
+import insurAiLogo from '@/assets/logo/INSURAI_logo.png';
 
 export default function Footer() {
   return (
@@ -8,11 +9,10 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <ShieldCheck className="text-primary-400" size={24} />
-            <span className="text-lg font-bold text-white">InsurAI</span>
+            <img src={insurAiLogo} alt="InsurAI" className="h-14 w-14 rounded-lg bg-white object-contain p-1" />
           </div>
           <p className="text-sm text-gray-400">
-            Digital-first insurance discovery, application, and management —
+            Digital-first insurance discovery, application, and management 
             built for transparency and speed.
           </p>
         </div>
@@ -42,8 +42,8 @@ export default function Footer() {
         <div>
           <h4 className="text-sm font-semibold text-white mb-3">Contact</h4>
           <ul className="space-y-2 text-sm">
-            <li className="flex items-center gap-2"><Phone size={14} /> 1800-XXX-XXXX</li>
-            <li className="flex items-center gap-2"><Mail size={14} /> support@insurai.example</li>
+            <li className="flex items-center gap-2"><Phone size={14} /> +91 9608035609</li>
+            <li className="flex items-center gap-2"><Mail size={14} /> abhishekkumarbgp0917@gmail.com</li>
           </ul>
         </div>
       </div>

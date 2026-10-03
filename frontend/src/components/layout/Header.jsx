@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShieldCheck, Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { Search, Menu, X, User, UserRound, LogOut, LayoutDashboard } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import Button from '@/components/common/Button';
+import insurAiLogo from '@/assets/logo/INSURAI_logo.png';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -33,12 +34,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Left — Logo */}
           <Link to="/" className="group flex items-center gap-2 shrink-0">
-            {/* TODO: Replace with actual logo image */}
-            {/* # */}
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm shadow-primary-600/20 transition-transform group-hover:scale-105">
-              <ShieldCheck size={22} strokeWidth={2.2} />
-            </span>
-            <span className="text-xl font-bold tracking-tight text-gray-900">InsurAI</span>
+            <img src={insurAiLogo} alt="InsurAI" className="h-14 w-14 object-contain transition-transform group-hover:scale-105" />
           </Link>
 
           {/* Center — Search (desktop only) */}
@@ -96,6 +92,13 @@ export default function Header() {
                         <LayoutDashboard size={16} /> Admin Dashboard
                       </Link>
                     )}
+                    <Link
+                      to="/profile/setup"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <UserRound size={16} /> My Profile
+                    </Link>
                     <Link
                       to="/my-applications"
                       onClick={() => setProfileOpen(false)}
@@ -157,6 +160,7 @@ export default function Header() {
               {user?.role === 'ADMIN' && (
                 <Link to="/admin" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-gray-700">Admin Dashboard</Link>
               )}
+              <Link to="/profile/setup" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-gray-700">My Profile</Link>
               <Link to="/my-applications" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-gray-700">My Applications</Link>
               <button onClick={() => { logout(); setMobileOpen(false); navigate('/'); }} className="text-sm font-medium text-danger-600">Logout</button>
             </div>
