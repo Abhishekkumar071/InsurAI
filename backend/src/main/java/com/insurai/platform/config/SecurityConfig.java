@@ -68,6 +68,7 @@ public class SecurityConfig {
 
         // Local Development CORS Configuration
         config.setAllowedOriginPatterns(List.of(
+                "https://insurai-1.onrender.com",
                 "http://localhost:5173",
                 "http://localhost:3000"
                 // AWS/Production CORS Origins (COMMENTED - Uncomment for deployment)
