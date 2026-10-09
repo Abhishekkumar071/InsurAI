@@ -44,17 +44,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Key Change 1: CORS Preflight (OPTIONS) requests ko explicitly permit kar rahe hain
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                                       
+                        .requestMatchers("/api/v1/policies/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/audit-logs/admin/**").hasRole("ADMIN")
+                        
+                        .requestMatchers("/api/v1/auth/**", "/auth/**").permitAll() // <-- `/auth/**` add kiya
+                        .requestMatchers("/api/v1/policies/**", "/policies/**").permitAll() // <-- `/policies/**` add kiya
+                        .requestMatchers("/api/v1/chat/**", "/chat/**").permitAll()
+                        .requestMatchers("/api/internal/**").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers("/api/v1/chat/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/policies/**").permitAll()
-                        .requestMatchers("/api/internal/**").permitAll()
-                        .requestMatchers("/api/v1/policies/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/audit-logs/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
