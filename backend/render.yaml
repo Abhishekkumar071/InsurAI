@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: insurai-backend
+    env: docker
+    region: singapore
+    plan: free
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: PORT
+        value: 8080
